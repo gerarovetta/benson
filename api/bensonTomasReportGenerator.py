@@ -8,6 +8,13 @@ from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.worksheet.table import Table, TableStyleInfo
 import re
 
+
+from http.server import BaseHTTPRequestHandler
+from os.path import dirname, abspath, join
+dir = dirname(abspath(__file__))
+ 
+
+
 def render_chart(datasource, period, subfamily, user):
     url = "https://www.hinweiss.com/labs_services/renderChart"
     
@@ -510,12 +517,17 @@ output_csv_files = process_subfamilies(subfamilies)
 for file in output_csv_files:
     print(f'Processed and saved: {file}')
 
-csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
-#subfamily = 'BLAZER'  # Replace with 'BELTS' or any other subfamily as needed
-#output_file = 'merged_data.csv'
-#processed_df = merge_and_process_responses_new(subfamily, output_file)
-#processedFile = 'mergedNew.csv'
-#add_totals_to_csv(output_file,processedFile)
+#csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
 
 
 
+class handler(BaseHTTPRequestHandler):
+ 
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type','text/plain')
+        self.end_headers()
+        with open(join(dir, '..', 'data', 'file.txt'), 'r') as file:
+          for line in file:
+            self.wfile.write(line.encode())
+        return
