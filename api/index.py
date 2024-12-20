@@ -525,5 +525,5 @@ class handler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        self.wfile.write(str('Hello World!!').encode())
+        self.wfile.write(str('Hello Mundo!!').encode())
         return
