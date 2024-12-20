@@ -1,4 +1,5 @@
 import requests
+import logging
 import pandas as pd
 import json
 import csv
@@ -267,12 +268,11 @@ def add_totals_to_csv(input_file, output_file):
 
 def process_subfamilies(subfamilies):
     output_files = []
-    self.wfile.write(str('Processing subfamilies').encode())
+    
     for subfamily_ in subfamilies:
-        self.wfile.write(str('Processing subfamilie 1').encode())
+        
         print(f'Processing {subfamily_}')
         output_file = 'merged_data.csv'
-        self.wfile.write(str('Processing subfamilie 2').encode())
         processed_df = merge_and_process_responses_new(subfamily_, output_file)
         self.wfile.write(str('Processing subfamilie 3').encode())
         processedFile = f'{subfamily_}.csv'
@@ -387,20 +387,18 @@ def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-   
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
         self.wfile.write(str('Hello World 2!!').encode())
         self.wfile.write(str('Hello World 3!!').encode())
         self.wfile.write(str('Hello World 4!!').encode())
         output_csv_files = process_subfamilies(subfamilies)
-        self.wfile.write(str('Hello World 4!!').encode())
+        self.wfile.write(str('Hello World 5!!').encode())
         for file in output_csv_files:
-            self.wfile.write(str('Hello World 2!!').encode())
+            self.wfile.write(str('Hello World 6!!').encode())
         self.wfile.write(str('Hello World!!').encode())
         csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
         
         self.wfile.write(str('Hello end!!').encode())
-
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
         return
