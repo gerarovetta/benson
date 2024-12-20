@@ -520,14 +520,10 @@ for file in output_csv_files:
 #csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
 
 
-
 class handler(BaseHTTPRequestHandler):
- 
     def do_GET(self):
         self.send_response(200)
-        self.send_header('Content-type','text/plain')
+        self.send_header('Content-type', 'text/plain')
         self.end_headers()
-        with open(join(dir, '..', 'data', 'file.txt'), 'r') as file:
-          for line in file:
-            self.wfile.write(line.encode())
+        self.wfile.write(str('Hello World!!').encode())
         return
