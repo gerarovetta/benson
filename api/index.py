@@ -267,15 +267,21 @@ def add_totals_to_csv(input_file, output_file):
 
 def process_subfamilies(subfamilies):
     output_files = []
-
+    self.wfile.write(str('Processing subfamilies').encode())
     for subfamily_ in subfamilies:
+        self.wfile.write(str('Processing subfamilie 1').encode())
         print(f'Processing {subfamily_}')
         output_file = 'merged_data.csv'
+        self.wfile.write(str('Processing subfamilie 2').encode())
         processed_df = merge_and_process_responses_new(subfamily_, output_file)
+        self.wfile.write(str('Processing subfamilie 3').encode())
         processedFile = f'{subfamily_}.csv'
+        self.wfile.write(str('Processing subfamilie 4').encode())
         add_totals_to_csv(output_file,processedFile)
+        self.wfile.write(str('Processing subfamilie 5').encode())
         output_files.append(processedFile)
         print(f'Merged and processed data saved to: {output_file}_merged_total_subfamily.csv')
+        self.wfile.write(str('Processing subfamilie 6').encode())
 
     return output_files
 
@@ -389,7 +395,6 @@ class handler(BaseHTTPRequestHandler):
 
         for file in output_csv_files:
             self.wfile.write(str('Hello World 2!!').encode())
-            self.wfile.write(str((f'Processed and saved: {file}').encode()))
         self.wfile.write(str('Hello World!!').encode())
         csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
         
