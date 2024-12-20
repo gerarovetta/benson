@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import json
 import csv
+from io import BytesIO
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
@@ -274,18 +275,18 @@ def process_subfamilies(subfamilies):
         print(f'Processing {subfamily_}')
         output_file = 'merged_data.csv'
         processed_df = merge_and_process_responses_new(subfamily_, output_file)
-        self.wfile.write(str('Processing subfamilie 3').encode())
+        
         processedFile = f'{subfamily_}.csv'
-        self.wfile.write(str('Processing subfamilie 4').encode())
+        
         add_totals_to_csv(output_file,processedFile)
-        self.wfile.write(str('Processing subfamilie 5').encode())
+        
         output_files.append(processedFile)
         print(f'Merged and processed data saved to: {output_file}_merged_total_subfamily.csv')
-        self.wfile.write(str('Processing subfamilie 6').encode())
+        
 
     return output_files
 
-def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
+def csvs_to_excel_with_formatting(csv_filenames):
     """
     Converts a list of CSV files into an Excel file with each CSV as a separate sheet and applies specific formatting.
 
@@ -294,7 +295,9 @@ def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
     output_excel_file (str): Path to the output Excel file.
     """
     # Create a Pandas Excel writer using openpyxl as the engine
-    with pd.ExcelWriter(output_excel_file, engine='openpyxl') as writer:
+    excel_stream = BytesIO()
+    
+    with pd.ExcelWriter(excel_stream, engine='openpyxl') as writer:
 
         # Define the border style
         thin_border = Border(
@@ -306,6 +309,7 @@ def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
         for csv_filename in csv_filenames:
             # Read each CSV file into a DataFrame
             df = pd.read_csv(csv_filename)
+            print(df)
             # Extract the name of the file (without extension) to use as the sheet name
             sheet_name = csv_filename.split('/')[-1].split('.')[0]
             # Write the DataFrame to a sheet
@@ -381,9 +385,144 @@ def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
                     cell.border = thin_border
 
             worksheet.freeze_panes = worksheet['B4']
+    excel_stream.seek(0)
+    return excel_stream
 
 #csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
+sub_family_dict = {
+    "BOW": "36",
+    "TIE": "34",
+    "BAGS": "30",
+    "HATS": "26",
+    "JEAN": "JEAN",
+    "POLO": "POLO",
+    "SUIT": "SUIT",
+    "BOLSA": "49",
+    "BELTS": "28",
+    "BOOKS": "33",
+    "PANTS": "PANTS",
+    "SOCKS": "35",
+    "SHIRT": "SHIRT",
+    "SHOES": "311",
+    "BLAZER": "BLAZER",
+    "FLEECE": "FIEECE",
+    "SCARFS": "27",
+    "TOALLA": "47",
+    "TSHIRT": "TSHIRT",
+    "VARIOS": "VAR",
+    "BOTELLA": "48",
+    "OUTWEAR": "OUT",
+    "PERFUME": "43",
+    "SWEATER": "SWETER",
+    "WALLET": "39",
+    "NO USAR": "BLEAZE",
+    "BERMUDAS": "SHORT",
+    "BRACELET": "22",
+    "CHALINAS": "42",
+    "DELANTAL": "45",
+    "SWIMWEAR": "29",
+    "UMBRELLA": "1",
+    "GIFT CARD": "46",
+    "UNDERWEAR": "32",
+    "KEY CHAIN": "21",
+    "SHOES HOFF": "314",
+    "SUNGLASSES": "40",
+    "HANDKERCHIEF": "37",
+    "MERCHANDISING": "41",
+    "SHOES SAUCONY": "313",
+    "SHOES SATORISAN": "312",
+    "PRENDAS OBSERVADAS C/FALLAS": "44",
+    "NECESSAIRE": "50",
+    "SHOES BESTIAS": "315",
+    "SHOES MUNICH": "316"
+}
 
+
+sub_family_dict_holkin = {
+    "BOW": "36",
+    "TIE": "34",
+    "BAGS": "30",
+    "HATS": "26",
+    "JEAN": "JEAN",
+    "POLO": "POLO",
+    "SUIT": "SUIT",
+    "BOLSA": "49",
+    "BELTS": "28",
+    "BOOKS": "33",
+    "PANTS": "PANTS",
+    "SOCKS": "31",
+    "SHIRT": "SHIRT",
+    "SHOES": "31",
+    "BLAZER": "BLAZER",
+    "FLEECE": "FIEECE",
+    "SCARFS": "27",
+    "TOALLA": "47",
+    "TSHIRT": "TSHIRT",
+    "VARIOS": "VAR",
+    "BOTELLA": "48",
+    "OUTWEAR": "OUT",
+    "PERFUME": "43",
+    "SWEATER": "SWETER",
+    "WALLET": "39",
+    "NO USAR": "BLEAZE",
+    "BERMUDAS": "SHORT",
+    "BRACELET": "22",
+    "CHALINAS": "42",
+    "DELANTAL": "45",
+    "SWIMWEAR": "29",
+    "UMBRELLA": "1",
+    "GIFT CARD": "46",
+    "UNDERWEAR": "32",
+    "KEY CHAIN": "21",
+    "SHOES HOFF": "314",
+    "SUNGLASSES": "40",
+    "HANDKERCHIEF": "37",
+    "MERCHANDISING": "41",
+    "SHOES SAUCONY": "313",
+    "SHOES SATORISAN": "312",
+    "PRENDAS OBSERVADAS C/FALLAS": "44",
+    "NECESSAIRE": "50",
+    "SHOES BESTIAS": "315",
+    "SHOES MUNICH": "316"
+}
+
+# Example usage
+def get_sub_family_id(name,user):
+    if user == 'holkin':
+        return sub_family_dict_holkin.get(name.upper())
+    else:
+        return sub_family_dict.get(name.upper())
+
+subfamilies =[
+    "SWIMWEAR"
+    ]
+
+subfamilies_ = [
+    "OUTWEAR",
+    "SWEATER",
+    "FLEECE",
+    "SHIRT",
+    "TSHIRT",
+    "POLO",
+    "PANTS",
+    "JEAN",
+    "BERMUDAS",
+    "SWIMWEAR",
+    "BLAZER",
+    "SUIT",
+    "SHOES",
+    "SHOES SATORISAN",
+    "SHOES HOFF",
+    "SHOES BESTIAS",
+    "SHOES MUNICH",
+    "SHOES SAUCONY",
+    "UNDERWEAR",
+    "BELTS",
+    "SOCKS",
+    "HATS",
+    "CHALINAS",
+    "SUNGLASSES"
+]
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -394,11 +533,15 @@ class handler(BaseHTTPRequestHandler):
         self.wfile.write(str('Hello World 3!!').encode())
         self.wfile.write(str('Hello World 4!!').encode())
         output_csv_files = process_subfamilies(subfamilies)
-        self.wfile.write(str('Hello World 5!!').encode())
-        for file in output_csv_files:
-            self.wfile.write(str('Hello World 6!!').encode())
-        self.wfile.write(str('Hello World!!').encode())
-        csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
-        
-        self.wfile.write(str('Hello end!!').encode())
+        excel_file = csvs_to_excel_with_formatting(output_csv_files)
+        excel_file.seek(0)
+        # Set headers to indicate file download
+        self.send_response(200)
+        self.send_header('Content-Disposition', 'attachment; filename="NekilHolkin.xlsx"')
+        self.send_header('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        self.end_headers()
+
+        # Write the file to the response
+        self.wfile.write(excel_file.getvalue())
+        excel_file.close()
         return
