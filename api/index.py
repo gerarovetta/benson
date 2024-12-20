@@ -512,7 +512,7 @@ subfamilies = [
     "CHALINAS",
     "SUNGLASSES"
 ]
-output_csv_files = process_subfamilies(subfamilies)
+#output_csv_files = process_subfamilies(subfamilies)
 
 for file in output_csv_files:
     print(f'Processed and saved: {file}')
