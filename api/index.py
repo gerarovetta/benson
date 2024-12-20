@@ -387,9 +387,7 @@ def csvs_to_excel_with_formatting(csv_filenames, output_excel_file):
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
+   
         self.wfile.write(str('Hello World 2!!').encode())
         self.wfile.write(str('Hello World 3!!').encode())
         self.wfile.write(str('Hello World 4!!').encode())
@@ -401,4 +399,8 @@ class handler(BaseHTTPRequestHandler):
         csvs_to_excel_with_formatting(output_csv_files,'NekilHolkin.xlsx')
         
         self.wfile.write(str('Hello end!!').encode())
+
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
         return
