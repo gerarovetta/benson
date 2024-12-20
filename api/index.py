@@ -1,12 +1,12 @@
-import requests
-import pandas as pd
-import json
-import csv
+from requests import requests
+from pandas import pandas as pd
+from json import json
+from csv import csv
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
 from openpyxl.worksheet.table import Table, TableStyleInfo
-import re
+from re import re
 
 
 from http.server import BaseHTTPRequestHandler
